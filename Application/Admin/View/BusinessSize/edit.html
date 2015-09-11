@@ -1,0 +1,45 @@
+<extend name="Public/base"/>
+
+<block name="body">
+    <div class="main-title">
+        <h2>{$info['id']?'编辑':'新增'}尺寸</h2>
+    </div>
+    <form action="{:U()}" method="post" class="form-horizontal">
+        <div class="form-item">
+            <label class="item-label">名称<span class="check-tips">（尺寸的显示名称，不填则为 宽度x高度 eg: 320x240）</span></label>
+            <div class="controls">
+                <input type="text" class="text input-large" name="title" value="{$info.title|default=''}">
+            </div>
+        </div>
+        <div class="form-item">
+            <label class="item-label">宽度<span class="check-tips">（尺寸的宽度）</span></label>
+            <div class="controls">
+                <input type="text" class="text input-large" name="width" value="{$info.width|default=''}">
+            </div>
+        </div>
+        <div class="form-item">
+            <label class="item-label">高度<span class="check-tips">（尺寸的高度）</span></label>
+            <div class="controls">
+                <input type="text" class="text input-large" name="height" value="{$info.height|default=''}">
+            </div>
+        </div>
+        <div class="form-item">
+            <button class="btn submit-btn ajax-post" id="submit" type="submit" target-form="form-horizontal">确 定</button>
+            <button class="btn btn-return" onclick="javascript:history.back(-1);return false;">返 回</button>
+        </div>
+        <notempty name="info">
+                <!-- 修改 -->
+        	   <input type="hidden" name="id" value="{$info.id}" />
+        <else/>
+                <!-- 新增 -->
+                <input type="hidden" name="business_id" value="{:I('business_id')}" />
+        </notempty>
+    </form>
+</block>
+
+    <block name="script">
+        <script type="text/javascript">
+        //导航高亮
+        highlight_subnav('{:U('Business/index')}');
+    </script>
+</block>

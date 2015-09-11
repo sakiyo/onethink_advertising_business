@@ -1,0 +1,43 @@
+<extend name="Public/base"/>
+
+<block name="body">
+    <div class="main-title">
+        <h2>{$info['id']?'编辑':'新增'}业务</h2>
+    </div>
+    <form action="{:U()}" method="post" class="form-horizontal">
+        <div class="form-item">
+            <label class="item-label">名称<span class="check-tips">（业务的显示名称）</span></label>
+            <div class="controls">
+                <input type="text" class="text input-large" name="title" value="{$info.title|default=''}">
+            </div>
+        </div>
+        <div class="form-item">
+            <label class="item-label">描述<span class="check-tips">（业务的详细描述）</span></label>
+            <div class="controls">
+                <label class="textarea input-large">
+                    <textarea name="description" placeholder="OneThink内容管理框架">{$info.description|default=''}</textarea>
+            </div>
+        </div>
+        <div class="form-item">
+            <label class="item-label">备注<span class="check-tips">（业务的备注）</span></label>
+            <div class="controls">
+                <label class="textarea input-large">
+                <textarea name="remark" placeholder="OneThink内容管理框架">{$info.remark|default=''}</textarea>
+            </div>
+        </div>
+        <div class="form-item">
+            <button class="btn submit-btn ajax-post" id="submit" type="submit" target-form="form-horizontal">确 定</button>
+            <button class="btn btn-return" onclick="javascript:history.back(-1);return false;">返 回</button>
+        </div>
+        <notempty name="info">
+        	<input type="hidden" name="id" value="{$info.id}" />
+        </notempty>
+    </form>
+</block>
+
+    <block name="script">
+        <script type="text/javascript">
+        //导航高亮
+        highlight_subnav('{:U('Business/index')}');
+    </script>
+</block>
