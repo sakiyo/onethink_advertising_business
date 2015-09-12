@@ -16,8 +16,8 @@
 		<!-- 高级搜索 -->
 		<div class="search-form fr cf">
 			<div class="sleft">
-				<input type="text" name="title" class="search-input" value="{:I('title')}" placeholder="请输入业务名称">
-				<a class="sch-btn" href="javascript:;" id="search" url="{:U('index')}"><i class="btn-search"></i></a>
+				<input type="text" name="title" class="search-input" value="{:I('title')}" placeholder="请输入素材名称">
+				<a class="sch-btn" href="javascript:;" id="search" url="{:U('index?business_size_id='.I('business_size_id'))}"><i class="btn-search"></i></a>
 			</div>
 		</div>
 	</div>
@@ -29,7 +29,7 @@
 					<th class="row-selected row-selected"><input class="check-all" type="checkbox"/></th>
 					<th class="">ID</th>
 					<th class="">名称</th>
-					<th class="">描述</th>
+					<th class="">类别</th>
 					<th class="">备注</th>
 					<th class="">状态</th>
 					<th class="">操作</th>
@@ -42,18 +42,17 @@
 							<td><input class="ids" type="checkbox" name="id[]" value="{$vo.id}" /></td>
 							<td>{$vo.id} </td>
 							<td>{$vo.title}</td>
-							<td>{:msubstr($vo['description'],0,20) }</td>
+							<td>{$vo.type_text}</td>
 							<td>{:msubstr($vo['remark'],0,20) }</td>
 							<td>{$vo.status_text}</td>
 							<td>
-								<a href="{:U('BusinessSize/index?business_id='.$vo['id'].'&business_title='.$vo['title'])}">尺寸管理</a>
 								<a href="{:U('edit?id='.$vo['id'])}">编辑</a>
 								<eq name="vo.status" value="1">
-								<a href="{:U('changeStatus?method=forbidBusiness&id='.$vo['id'])}" class="ajax-get">禁用</a>
+								<a href="{:U('changeStatus?method=forbidMaterial&id='.$vo['id'])}" class="ajax-get">禁用</a>
 								<else/>
-								<a href="{:U('changeStatus?method=resumeBusiness&id='.$vo['id'])}" class="ajax-get">启用</a>
+								<a href="{:U('changeStatus?method=resumeMaterial&id='.$vo['id'])}" class="ajax-get">启用</a>
 							</eq>
-							<a href="{:U('changeStatus?method=deleteBusiness&id='.$vo['id'])}" class="confirm ajax-get">删除</a>
+							<a href="{:U('changeStatus?method=deleteMaterial&id='.$vo['id'])}" class="confirm ajax-get">删除</a>
 						</td>
 					</tr>
 				</volist>

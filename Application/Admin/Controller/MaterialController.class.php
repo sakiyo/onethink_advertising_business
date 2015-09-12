@@ -22,6 +22,7 @@ class MaterialController extends AdminController {
 
 		$list = $this->lists('Material', $map);
 		int_to_string($list);
+		type_to_text($list);
 		// 记录当前列表页的cookie
 		Cookie('__forward__', $_SERVER['REQUEST_URI']);
 
@@ -38,14 +39,10 @@ class MaterialController extends AdminController {
 		if (IS_POST) {
 			$Material = D('Material');
 			if ($Material->create() !== false) {
-				//拼接宽高为显示头
-				if (empty($Material->title)) {
-					$Material->title = $Material->width . 'x' . $Material->height;
-				}
 				if (!$Material->add()) {
 					$this->error('添加素材失败');
 				} else {
-					$this->success('添加素材成功', Cookie('__forward__'));
+					$this->success('添加素材成功', U('index', get_http_query_string_array()));
 				}
 			} else {
 				$this->error($Material->getError());
@@ -65,13 +62,9 @@ class MaterialController extends AdminController {
 			$Material = D('Material');
 			$data = $Material->create();
 			if ($data) {
-				//拼接宽高为显示头
-				if (empty($Material->title)) {
-					$Material->title = $Material->width . 'x' . $Material->height;
-				}
 				if ($Material->save()) {
 					//记录行为
-					// action_log('update_business_size', 'Material', $data['id'], UID);
+					// action_log('update_material', 'Material', $data['id'], UID);
 					$this->success('更新成功', Cookie('__forward__'));
 				} else {
 					$this->error('更新失败');

@@ -4,7 +4,7 @@
 namespace Admin\Controller;
 
 /**
- * 业务尺寸
+ * 尺寸
  * @author 温开元<wenkaiyuan.6@163.com 594164084@qq.com>
  */
 class BusinessSizeController extends AdminController {
@@ -31,7 +31,7 @@ class BusinessSizeController extends AdminController {
 	}
 
 	/**
-	 * 新增业务
+	 * 新增尺寸
 	 * @author 温开元<wenkaiyuan.6@163.com 594164084@qq.com>
 	 */
 	public function add() {
@@ -43,27 +43,22 @@ class BusinessSizeController extends AdminController {
 					$BusinessSize->title = $BusinessSize->width . 'x' . $BusinessSize->height;
 				}
 				if (!$BusinessSize->add()) {
-					$this->error('添加业务失败');
+					$this->error('添加尺寸失败');
 				} else {
 					//Cookie('__forward__') or U('index?business_id=' . I('business_id'))
-					$queryParam = Cookie('__forward__');
-					p($queryParam);exit;
-					if (!empty($queryParam['p'])) {
-						unset($queryParam['p']);
-					}
-					$this->success('添加业务成功', U('index', $queryParam));
+					$this->success('添加尺寸成功', U('index', get_http_query_string_array()));
 				}
 			} else {
 				$this->error($BusinessSize->getError());
 			}
 		} else {
-			$this->meta_title = '新增业务';
+			$this->meta_title = '新增尺寸';
 			$this->display('edit');
 		}
 	}
 
 	/**
-	 * 编辑业务
+	 * 编辑尺寸
 	 * @author 温开元<wenkaiyuan.6@163.com 594164084@qq.com>
 	 */
 	public function edit($id = 0) {
@@ -100,7 +95,7 @@ class BusinessSizeController extends AdminController {
 	}
 
 	/**
-	 * 业务状态修改
+	 * 尺寸状态修改
 	 * @author 温开元<wenkaiyuan.6@163.com 594164084@qq.com>
 	 */
 	public function changeStatus($method = null) {

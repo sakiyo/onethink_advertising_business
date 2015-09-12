@@ -441,22 +441,18 @@ function get_action_type($type, $all = false) {
 }
 
 /**
- * 调适输出
- * @param $data 输出的数据
- * @author 温开元 <wenkaiyuan.6@163.com 594164084@qq.com>
+ * 素材类型id转文本（在原有的基础上添加列）
+ * @param  array  $lists [记录集]
+ * @return [array]       [$lists]
+ * @author 温开元<wenkaiyuan.6@163.com 594164084@qq.com>
  */
-function p($data = null) {
-	echo '----------start----------<br />';
-	echo '<pre>';
-	if (func_num_args() > 1) {
-		$data = func_get_args();
-		foreach ($data as $item) {
-			print_r($item);
-			echo '<hr />';
-		}
-	} else {
-		print_r($data);
+function type_to_text(&$list = array()) {
+	$config = C('MATERIAL_TYPE');
+	foreach ($config as &$item) {
+		$item = $item['title'];
 	}
-	echo '<pre />';
-	echo '----------end----------<br />';
+
+	foreach ($list as &$item) {
+		$item['type_text'] = $config[$item['material_type']];
+	}
 }
