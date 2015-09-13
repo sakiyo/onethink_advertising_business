@@ -83,7 +83,7 @@ class Model {
 		}
 		// 设置表前缀
 		if (is_null($tablePrefix)) {
-// 前缀为Null表示没有前缀
+			// 前缀为Null表示没有前缀
 			$this->tablePrefix = '';
 		} elseif ('' != $tablePrefix) {
 			$this->tablePrefix = $tablePrefix;

@@ -3,14 +3,14 @@
 <block name="body">
 	<!-- 标题栏 -->
 	<div class="main-title">
-		<h2>素材列表->{:I('business_title')}->{:I('business_size_title')}</h2>
+		<h2>素材列表{:Cookie('__crumbs__')}</h2>
 	</div>
 	<div class="cf">
 		<div class="fl">
-			<a class="btn" href="{:U('add')}">新 增</a>
-			<button class="btn ajax-post" url="{:U('changeStatus?method=resumeBusiness')}" target-form="ids">启 用</button>
-			<button class="btn ajax-post" url="{:U('changeStatus?method=forbidBusiness')}" target-form="ids">禁 用</button>
-			<button class="btn ajax-post confirm" url="{:U('changeStatus?method=deleteBusiness')}" target-form="ids">删 除</button>
+			<a class="btn" href="{:U('add', get_http_query_string_array())}">新 增</a>
+			<button class="btn ajax-post" url="{:U('changeStatus?method=resume')}" target-form="ids">启 用</button>
+			<button class="btn ajax-post" url="{:U('changeStatus?method=forbid')}" target-form="ids">禁 用</button>
+			<button class="btn ajax-post confirm" url="{:U('changeStatus?method=delete')}" target-form="ids">删 除</button>
 		</div>
 
 		<!-- 高级搜索 -->
@@ -46,13 +46,13 @@
 							<td>{:msubstr($vo['remark'],0,20) }</td>
 							<td>{$vo.status_text}</td>
 							<td>
-								<a href="{:U('edit?id='.$vo['id'])}">编辑</a>
+								<a href="{:U('edit', array('id'=>$vo['id'],'business_size_id'=>I('business_size_id')))}">编辑</a>
 								<eq name="vo.status" value="1">
-								<a href="{:U('changeStatus?method=forbidMaterial&id='.$vo['id'])}" class="ajax-get">禁用</a>
+								<a href="{:U('changeStatus?method=forbid&id='.$vo['id'])}" class="ajax-get">禁用</a>
 								<else/>
-								<a href="{:U('changeStatus?method=resumeMaterial&id='.$vo['id'])}" class="ajax-get">启用</a>
+								<a href="{:U('changeStatus?method=resume&id='.$vo['id'])}" class="ajax-get">启用</a>
 							</eq>
-							<a href="{:U('changeStatus?method=deleteMaterial&id='.$vo['id'])}" class="confirm ajax-get">删除</a>
+							<a href="{:U('changeStatus?method=delete&id='.$vo['id'])}" class="confirm ajax-get">删除</a>
 						</td>
 					</tr>
 				</volist>
@@ -64,6 +64,11 @@
 </div>
 <div class="page">
 	{$_page}
+</div>
+<div class="cf">
+	<div class="fl">
+		<button class="btn btn-return" onclick="javascript:location.href='{:U('BusinessSize/index',Cookie('__crumbs_param__'))}';">返 回</button>
+	</div>
 </div>
 </block>
 

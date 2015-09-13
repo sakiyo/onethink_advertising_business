@@ -8,9 +8,9 @@
 	<div class="cf">
 		<div class="fl">
 			<a class="btn" href="{:U('add')}">新 增</a>
-			<button class="btn ajax-post" url="{:U('changeStatus?method=resumeBusiness')}" target-form="ids">启 用</button>
-			<button class="btn ajax-post" url="{:U('changeStatus?method=forbidBusiness')}" target-form="ids">禁 用</button>
-			<button class="btn ajax-post confirm" url="{:U('changeStatus?method=deleteBusiness')}" target-form="ids">删 除</button>
+			<button class="btn ajax-post" url="{:U('changeStatus?method=resume')}" target-form="ids">启 用</button>
+			<button class="btn ajax-post" url="{:U('changeStatus?method=forbid')}" target-form="ids">禁 用</button>
+			<button class="btn ajax-post confirm" url="{:U('changeStatus?method=delete')}" target-form="ids">删 除</button>
 		</div>
 
 		<!-- 高级搜索 -->
@@ -49,11 +49,11 @@
 								<a href="{:U('BusinessSize/index?business_id='.$vo['id'].'&business_title='.$vo['title'])}">尺寸管理</a>
 								<a href="{:U('edit?id='.$vo['id'])}">编辑</a>
 								<eq name="vo.status" value="1">
-								<a href="{:U('changeStatus?method=forbidBusiness&id='.$vo['id'])}" class="ajax-get">禁用</a>
+								<a href="{:U('changeStatus?method=forbid&id='.$vo['id'])}" class="ajax-get">禁用</a>
 								<else/>
-								<a href="{:U('changeStatus?method=resumeBusiness&id='.$vo['id'])}" class="ajax-get">启用</a>
+								<a href="{:U('changeStatus?method=resume&id='.$vo['id'])}" class="ajax-get">启用</a>
 							</eq>
-							<a href="{:U('changeStatus?method=deleteBusiness&id='.$vo['id'])}" class="confirm ajax-get">删除</a>
+							<a href="{:U('changeStatus?method=delete&id='.$vo['id'])}" class="confirm ajax-get">删除</a>
 						</td>
 					</tr>
 				</volist>

@@ -9,6 +9,14 @@ namespace Admin\Controller;
  */
 class MaterialController extends AdminController {
 
+	private $saveFun = array(
+		1 => 'savePicAd',
+		2 => 'saveCodeAd',
+		3 => 'saveVideoAd',
+		4 => 'saveIframeAd',
+		5 => 'saveHtmlAd',
+	);
+
 	/**
 	 * 素材列表
 	 * @author 温开元<wenkaiyuan.6@163.com 594164084@qq.com>
@@ -26,6 +34,12 @@ class MaterialController extends AdminController {
 		// 记录当前列表页的cookie
 		Cookie('__forward__', $_SERVER['REQUEST_URI']);
 
+		//生成面包屑
+		if (!empty($business_title = I('business_title')) && !empty($business_size_title = I('business_size_title'))) {
+			$__crumbs__ = '->' . $business_title . '->' . $business_size_title;
+			Cookie('__crumbs__', $__crumbs__);
+		}
+
 		$this->assign('_list', $list);
 		$this->meta_title = '素材列表';
 		$this->display();
@@ -39,10 +53,15 @@ class MaterialController extends AdminController {
 		if (IS_POST) {
 			$Material = D('Material');
 			if ($Material->create() !== false) {
+				/* 先取出type值 */
+				$material_type = $Material->material_type;
+
 				if (!$Material->add()) {
 					$this->error('添加素材失败');
 				} else {
-					$this->success('添加素材成功', U('index', get_http_query_string_array()));
+					/* 处理属性 */
+
+					$this->success('添加素材成功', U('index', array('business_size_id' => I('business_size_id'))));
 				}
 			} else {
 				$this->error($Material->getError());
@@ -63,7 +82,7 @@ class MaterialController extends AdminController {
 			$data = $Material->create();
 			if ($data) {
 				if ($Material->save()) {
-					//记录行为
+					// 记录行为
 					// action_log('update_material', 'Material', $data['id'], UID);
 					$this->success('更新成功', Cookie('__forward__'));
 				} else {
@@ -91,24 +110,13 @@ class MaterialController extends AdminController {
 	 * @author 温开元<wenkaiyuan.6@163.com 594164084@qq.com>
 	 */
 	public function changeStatus($method = null) {
-		$id = array_unique((array) I('id', 0));
-		$id = is_array($id) ? implode(',', $id) : $id;
-		if (empty($id)) {
-			$this->error('请选择要操作的数据!');
-		}
-		$map['id'] = array('in', $id);
-		switch (strtolower($method)) {
-			case 'forbidmaterial':
-				$this->forbid('Material', $map);
-				break;
-			case 'resumematerial':
-				$this->resume('Material', $map);
-				break;
-			case 'deletematerial':
-				$this->delete('Material', $map);
-				break;
-			default:
-				$this->error('参数非法');
-		}
+		$this->changeStatusMine($method, CONTROLLER_NAME);
 	}
+
+	private function savePicAd() {}
+	private function saveCodeAd() {}
+	private function saveVideoAd() {}
+	private function saveIframeAd() {}
+	private function saveHtmlAd() {}
+
 }

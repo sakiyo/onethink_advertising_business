@@ -25,6 +25,16 @@ class BusinessSizeController extends AdminController {
 		// 记录当前列表页的cookie
 		Cookie('__forward__', $_SERVER['REQUEST_URI']);
 
+		//生成面包屑
+		if (!empty($business_title = I('business_title'))) {
+			$__crumbs__ = '->' . I('business_title');
+			Cookie('__crumbs__', $__crumbs__);
+			Cookie('__crumbs_param__', array(
+				'business_id' => I('business_id'),
+				'business_title' => I('business_title'),
+			));
+		}
+
 		$this->assign('_list', $list);
 		$this->meta_title = '尺寸列表';
 		$this->display();
@@ -45,8 +55,9 @@ class BusinessSizeController extends AdminController {
 				if (!$BusinessSize->add()) {
 					$this->error('添加尺寸失败');
 				} else {
-					//Cookie('__forward__') or U('index?business_id=' . I('business_id'))
-					$this->success('添加尺寸成功', U('index', get_http_query_string_array()));
+					$this->success('添加尺寸成功', U('index', array(
+						'business_id' => I('business_id'),
+					)));
 				}
 			} else {
 				$this->error($BusinessSize->getError());
@@ -72,7 +83,7 @@ class BusinessSizeController extends AdminController {
 				}
 				if ($BusinessSize->save()) {
 					//记录行为
-					// action_log('update_business_size', 'businesssize', $data['id'], UID);
+					// action_log('update_business_size', 'BusinessSize', $data['id'], UID);
 					$this->success('更新成功', Cookie('__forward__'));
 				} else {
 					$this->error('更新失败');
@@ -99,24 +110,6 @@ class BusinessSizeController extends AdminController {
 	 * @author 温开元<wenkaiyuan.6@163.com 594164084@qq.com>
 	 */
 	public function changeStatus($method = null) {
-		$id = array_unique((array) I('id', 0));
-		$id = is_array($id) ? implode(',', $id) : $id;
-		if (empty($id)) {
-			$this->error('请选择要操作的数据!');
-		}
-		$map['id'] = array('in', $id);
-		switch (strtolower($method)) {
-			case 'forbidbusinesssize':
-				$this->forbid('BusinessSize', $map);
-				break;
-			case 'resumebusinesssize':
-				$this->resume('BusinessSize', $map);
-				break;
-			case 'deletebusinesssize':
-				$this->delete('BusinessSize', $map);
-				break;
-			default:
-				$this->error('参数非法');
-		}
+		$this->changeStatusMine($method, CONTROLLER_NAME);
 	}
 }

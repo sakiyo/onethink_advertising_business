@@ -1,43 +1,95 @@
-<extend name="Public/base"/>
+﻿<extend name="Public/base"/>
 
 <block name="body">
     <div class="main-title">
-        <h2>{$info['id']?'编辑':'新增'}业务</h2>
+        <h2>{$info['id']?'编辑':'新增'}素材</h2>
     </div>
-    <form action="{:U()}" method="post" class="form-horizontal">
+    <div class="tab-wrap">
+        <ul class="tab-nav nav">
+            <li tag="0" class="current"><a href="#tag=0">基础</a></li>
+            <li tag="1"><a href="#tag=1">图片广告</a></li>
+            <li tag="2"><a href="#tag=2">代码广告</a></li>
+            <li tag="3"><a href="#tag=3">动画广告</a></li>
+            <li tag="4"><a href="#tag=4">iframe广告</a></li>
+            <li tag="5"><a href="#tag=5">整页广告</a></li>
+        </ul>
+    <!-- tag 0 基础 -->
+    <div id="div-tag-0" class="tag-div">
+    <form action="{:U()}" method="post" id="form-tag-0" class="form-horizontal">
         <div class="form-item">
-            <label class="item-label">名称<span class="check-tips">（业务的显示名称）</span></label>
+            <label class="item-label">名称<span class="check-tips">（素材的显示名称）</span></label>
             <div class="controls">
                 <input type="text" class="text input-large" name="title" value="{$info.title|default=''}">
             </div>
         </div>
         <div class="form-item">
-            <label class="item-label">描述<span class="check-tips">（业务的详细描述）</span></label>
+            <label class="item-label">统计<span class="check-tips">（素材的统计代码）</span></label>
             <div class="controls">
-                <label class="textarea input-large">
-                    <textarea name="description" placeholder="OneThink内容管理框架">{$info.description|default=''}</textarea>
+                <label class="textarea input-large big-textarea">
+                    <textarea name="statistics_code" placeholder="OneThink内容管理框架">{$info.statistics_code|default=''}</textarea>
+                </label>
             </div>
         </div>
         <div class="form-item">
-            <label class="item-label">备注<span class="check-tips">（业务的备注）</span></label>
+            <label class="item-label">备注<span class="check-tips">（素材的备注）</span></label>
             <div class="controls">
                 <label class="textarea input-large">
                 <textarea name="remark" placeholder="OneThink内容管理框架">{$info.remark|default=''}</textarea>
+                </label>
+            </div>
+        </div>
+        <div class="form-item">
+            <label class="item-label">排序<span class="check-tips">（0-255，越低越靠前，用于优先展示。）</span></label>
+            <div class="controls">
+                <input type="text" class="text input-large" name="sort" value="{$info.sort|default='100'}">
+            </div>
+        </div>
+        <div class="form-item">
+            <label class="item-label">类型<span class="check-tips">（素材类型）</span></label>
+            <div class="controls">
+                <select name="material_type">
+                    <option value="-1">请选择...</option>
+                    <option value="1">图片广告</option>
+                    <option value="2">代码广告</option>
+                    <option value="3">动画广告</option>
+                    <option value="4">iframe广告</option>
+                    <option value="5">整页广告</option>
+                </select>
             </div>
         </div>
         <div class="form-item">
             <button class="btn submit-btn ajax-post" id="submit" type="submit" target-form="form-horizontal">确 定</button>
             <button class="btn btn-return" onclick="javascript:history.back(-1);return false;">返 回</button>
         </div>
+            <input type="hidden" name="business_size_id" value="{:I('business_size_id')}" />
+        <!-- 编辑 -->
         <notempty name="info">
-        	<input type="hidden" name="id" value="{$info.id}" />
+            <input type="hidden" name="id" value="{$info.id}" />
         </notempty>
     </form>
+    </div>
+
+    </div>
 </block>
 
     <block name="script">
         <script type="text/javascript">
         //导航高亮
         highlight_subnav('{:U('Business/index')}');
+
+        $(function(){
+
+            /* tag切换效果 */
+            $('ul[class="tab-nav nav"] li').on('click',function(){
+                var li = $(this);
+                var tag_val = li.attr('tag');
+                
+                $('div[class="tag-div"]').hide();
+                $('#div-tag-'+tag_val).show();
+
+                $('ul[class="tab-nav nav"] li').removeClass('current');
+                li.addClass('current');
+            });
+        });
     </script>
 </block>

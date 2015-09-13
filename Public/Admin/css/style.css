@@ -632,3 +632,9 @@ body{
 .copyright a {
     margin: 0 4px;
 }
+
+/* 大的复文本框 */
+.big-textarea {
+    width: 68%;
+    height: 200px;
+}

@@ -3,14 +3,14 @@
 <block name="body">
 	<!-- 标题栏 -->
 	<div class="main-title">
-		<h2>尺寸列表->{:I('business_title')}</h2>
+		<h2>尺寸列表{:Cookie('__crumbs__')}</h2>
 	</div>
 	<div class="cf">
 		<div class="fl">
 			<a class="btn" href="{:U('add?business_id='.I('business_id'))}">新 增</a>
-			<button class="btn ajax-post" url="{:U('changeStatus?method=resumeSize')}" target-form="ids">启 用</button>
-			<button class="btn ajax-post" url="{:U('changeStatus?method=forbidSize')}" target-form="ids">禁 用</button>
-			<button class="btn ajax-post confirm" url="{:U('changeStatus?method=deleteSize')}" target-form="ids">删 除</button>
+			<button class="btn ajax-post" url="{:U('changeStatus?method=resume')}" target-form="ids">启 用</button>
+			<button class="btn ajax-post" url="{:U('changeStatus?method=forbid')}" target-form="ids">禁 用</button>
+			<button class="btn ajax-post confirm" url="{:U('changeStatus?method=delete')}" target-form="ids">删 除</button>
 		</div>
 
 		<!-- 高级搜索 -->
@@ -49,11 +49,11 @@
 								<a href="{:U('Material/index?business_size_id='.$vo['id'].'&business_title='.I('business_title').'&business_size_title='.$vo['title'])}">素材管理</a>&nbsp;
 								<a href="{:U('edit?id='.$vo['id'])}">编辑</a>&nbsp;
 								<eq name="vo.status" value="1">
-								<a href="{:U('changeStatus?method=forbidBusinessSize&id='.$vo['id'])}" class="ajax-get">禁用</a>
+								<a href="{:U('changeStatus?method=forbid&id='.$vo['id'])}" class="ajax-get">禁用</a>
 								<else/>
-								<a href="{:U('changeStatus?method=resumeBusinessSize&id='.$vo['id'])}" class="ajax-get">启用</a>
+								<a href="{:U('changeStatus?method=resume&id='.$vo['id'])}" class="ajax-get">启用</a>
 							</eq>
-							<a href="{:U('changeStatus?method=deleteBusinessSize&id='.$vo['id'])}" class="confirm ajax-get">删除</a>
+							<a href="{:U('changeStatus?method=delete&id='.$vo['id'])}" class="confirm ajax-get">删除</a>
 						</td>
 					</tr>
 				</volist>
@@ -65,6 +65,11 @@
 </div>
 <div class="page">
 	{$_page}
+</div>
+<div class="cf">
+	<div class="fl">
+		<button class="btn btn-return" onclick="javascript:location.href='{:U('Business/index')}';">返 回</button>
+	</div>
 </div>
 </block>
 

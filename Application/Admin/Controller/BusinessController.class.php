@@ -66,7 +66,7 @@ class BusinessController extends AdminController {
 			if ($data) {
 				if ($Business->save()) {
 					//记录行为
-					// action_log('update_business', 'business', $data['id'], UID);
+					// action_log('update_business', 'Business', $data['id'], UID);
 					$this->success('更新成功', Cookie('__forward__'));
 				} else {
 					$this->error('更新失败');
@@ -93,24 +93,7 @@ class BusinessController extends AdminController {
 	 * @author 温开元<wenkaiyuan.6@163.com 594164084@qq.com>
 	 */
 	public function changeStatus($method = null) {
-		$id = array_unique((array) I('id', 0));
-		$id = is_array($id) ? implode(',', $id) : $id;
-		if (empty($id)) {
-			$this->error('请选择要操作的数据!');
-		}
-		$map['id'] = array('in', $id);
-		switch (strtolower($method)) {
-			case 'forbidbusiness':
-				$this->forbid('Business', $map);
-				break;
-			case 'resumebusiness':
-				$this->resume('Business', $map);
-				break;
-			case 'deletebusiness':
-				$this->delete('Business', $map);
-				break;
-			default:
-				$this->error('参数非法');
-		}
+		$this->changeStatusMine($method, CONTROLLER_NAME);
 	}
+
 }
