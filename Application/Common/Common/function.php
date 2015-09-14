@@ -1081,9 +1081,14 @@ function get_http_query_string_array($diff = array()) {
 		array_shift($queryArray);
 		array_shift($queryArray);
 
-		while (!empty($item = array_shift($queryArray))) {
-			$val = array_shift($queryArray);
-			$QueryParams[$item] = empty($val) ? '' : $val;
+		/* 如果这里报错则是因为这里需要PHP5.5语法支持 */
+		$item = true;
+		while ($item) {
+			$item = array_shift($queryArray);
+			if (!empty($item)) {
+				$val = array_shift($queryArray);
+				$QueryParams[$item] = empty($val) ? '' : $val;
+			}
 		}
 	}
 

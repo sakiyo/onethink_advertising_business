@@ -1,27 +1,30 @@
 ﻿<extend name="Public/base"/>
 
 <block name="body">
+    <script type="text/javascript" src="__STATIC__/uploadify/jquery.uploadify.min.js"></script>
     <div class="main-title">
-        <h2>{$info['id']?'编辑':'新增'}素材</h2>
+        <h2>{$info['id']?'编辑':'新增'}素材{:Cookie('__crumbs__')}</h2>
     </div>
     <div class="tab-wrap">
         <ul class="tab-nav nav">
-            <li tag="0" class="current"><a href="#tag=0">基础</a></li>
-            <li tag="1"><a href="#tag=1">图片广告</a></li>
-            <li tag="2"><a href="#tag=2">代码广告</a></li>
-            <li tag="3"><a href="#tag=3">动画广告</a></li>
-            <li tag="4"><a href="#tag=4">iframe广告</a></li>
-            <li tag="5"><a href="#tag=5">整页广告</a></li>
+            <li tag="0" class="current"><a href="javascript:;">基础</a></li>
+            <li tag="1"><a href="javascript:;">图文广告</a></li>
+            <li tag="2"><a href="javascript:;">代码广告</a></li>
+            <li tag="3"><a href="javascript:;">动画广告</a></li>
+            <li tag="4"><a href="javascript:;">iframe广告</a></li>
+            <li tag="5"><a href="javascript:;">整页广告</a></li>
         </ul>
+    <form action="{:U()}" method="post" id="form-tag-0" class="form-horizontal">
     <!-- tag 0 基础 -->
     <div id="div-tag-0" class="tag-div">
-    <form action="{:U()}" method="post" id="form-tag-0" class="form-horizontal">
+    
         <div class="form-item">
             <label class="item-label">名称<span class="check-tips">（素材的显示名称）</span></label>
             <div class="controls">
                 <input type="text" class="text input-large" name="title" value="{$info.title|default=''}">
             </div>
         </div>
+
         <div class="form-item">
             <label class="item-label">统计<span class="check-tips">（素材的统计代码）</span></label>
             <div class="controls">
@@ -30,6 +33,7 @@
                 </label>
             </div>
         </div>
+
         <div class="form-item">
             <label class="item-label">备注<span class="check-tips">（素材的备注）</span></label>
             <div class="controls">
@@ -38,37 +42,125 @@
                 </label>
             </div>
         </div>
+
         <div class="form-item">
             <label class="item-label">排序<span class="check-tips">（0-255，越低越靠前，用于优先展示。）</span></label>
             <div class="controls">
                 <input type="text" class="text input-large" name="sort" value="{$info.sort|default='100'}">
             </div>
         </div>
+
         <div class="form-item">
             <label class="item-label">类型<span class="check-tips">（素材类型）</span></label>
             <div class="controls">
                 <select name="material_type">
                     <option value="-1">请选择...</option>
-                    <option value="1">图片广告</option>
-                    <option value="2">代码广告</option>
-                    <option value="3">动画广告</option>
-                    <option value="4">iframe广告</option>
-                    <option value="5">整页广告</option>
+                    <option value="1" <eq name="info.material_type" value="1">selected</eq>>图文广告</option>
+                    <option value="2" <eq name="info.material_type" value="2">selected</eq>>代码广告</option>
+                    <option value="3" <eq name="info.material_type" value="3">selected</eq>>动画广告</option>
+                    <option value="4" <eq name="info.material_type" value="4">selected</eq>>iframe广告</option>
+                    <option value="5" <eq name="info.material_type" value="5">selected</eq>>整页广告</option>
                 </select>
             </div>
         </div>
-        <div class="form-item">
-            <button class="btn submit-btn ajax-post" id="submit" type="submit" target-form="form-horizontal">确 定</button>
-            <button class="btn btn-return" onclick="javascript:history.back(-1);return false;">返 回</button>
-        </div>
-            <input type="hidden" name="business_size_id" value="{:I('business_size_id')}" />
-        <!-- 编辑 -->
-        <notempty name="info">
-            <input type="hidden" name="id" value="{$info.id}" />
-        </notempty>
-    </form>
+    
     </div>
 
+    <!-- tag 1 图片广告 -->
+    <div id="div-tag-1" class="tag-div">
+
+        <div class="form-item">
+            <label class="item-label">目标地址<span class="check-tips">（点击后要跳转的地址）</span></label>
+            <div class="controls">
+                <input type="text" class="text input-large" name="target_1" value="{$info_tag_1.target|default=''}">
+            </div>
+        </div>
+
+        <div class="form-item">
+            <label class="item-label">外链地址<span class="check-tips">（外链图片地址，填写外链地址且上传图片只会取外链地址。）</span></label>
+            <div class="controls">
+                <input type="text" class="text input-large" name="external_path_1" value="{$info_tag_1.external_path|default=''}">
+            </div>
+        </div>
+
+        <div class="form-item">
+            <label class="item-label">上传图片<span class="check-tips">（外链上传任选一，如需多图，请使用上传。）</span></label>
+            <div class="controls">
+                <div class="controls">
+                    <input type="file" id="upload_picture_tag_1">
+                    <div class="upload-img-box" id="img_box_tag_1">
+                        <notempty name="info_tag_1.attribute">
+                        <item>
+                            <input type="hidden" name="save_path[]" />
+                            <div class="upload-pre-item"><img src="" /></div>
+                        </item>
+                        </notempty>
+                    </div>
+                </div>
+                <script type="text/javascript">
+                    //上传图片
+                    /* 初始化上传插件 */
+                    $("#upload_picture_tag_1").uploadify({
+                        "height"          : 30,
+                        "swf"             : "__STATIC__/uploadify/uploadify.swf",
+                        "fileObjName"     : "download",
+                        "buttonText"      : "上传图片",
+                        "uploader"        : "{:U('File/uploadPicture',array('session_id'=>session_id()))}",
+                        "width"           : 120,
+                        'removeTimeout'   : 1,
+                        'fileTypeExts'    : '*.jpg; *.png; *.gif;',
+                        "onUploadSuccess" : uploadPictureTag1,
+                        'onFallback' : function() {
+                            alert('未检测到兼容版本的Flash.');
+                        }
+                    });
+                    function uploadPictureTag1(file, data){
+                        var data = $.parseJSON(data);
+                        var src = '';
+                        if(data.status){
+                            // TODO 这里改成添加 item 块
+                            $("#cover_id_{$field.name}").val(data.id);
+                            src = data.url || '__ROOT__' + data.path
+                            $("#cover_id_{$field.name}").parent().find('.upload-img-box').html(
+                                '<div class="upload-pre-item"><img src="' + src + '"/></div>'
+                            );
+                        } else {
+                            updateAlert(data.info);
+                            setTimeout(function(){
+                                $('#top-alert').find('button').click();
+                                $(that).removeClass('disabled').prop('disabled',false);
+                            },1500);
+                        }
+                    }
+                    </script>
+            </div>
+        </div>        
+    </div>
+
+    <!-- tag 2 代码广告 -->
+    <div id="div-tag-2" class="tag-div"></div>
+
+    <!-- tag 3 动画广告 -->
+    <div id="div-tag-3" class="tag-div"></div>
+
+    <!-- tag 4 iframe广告 -->
+    <div id="div-tag-4" class="tag-div"></div>
+
+    <!-- tag 5 整页广告 -->
+    <div id="div-tag-5" class="tag-div"></div>
+
+    <div class="form-item">
+        <button class="btn submit-btn ajax-post" id="submit" type="submit" target-form="form-horizontal">确 定</button>
+        <button class="btn btn-return" onclick="javascript:history.back(-1);return false;">返 回</button>
+    </div>
+
+    <input type="hidden" name="business_size_id" value="{:I('business_size_id')}" />
+    <!-- 编辑 -->
+    <notempty name="info">
+        <input type="hidden" name="id" value="{$info.id}" />
+    </notempty>
+
+</form>
     </div>
 </block>
 
@@ -78,6 +170,10 @@
         highlight_subnav('{:U('Business/index')}');
 
         $(function(){
+            $('div[class="tag-div"]').each(function(i,item){
+                if(!i){return true;}
+                $(item).hide();
+            });
 
             /* tag切换效果 */
             $('ul[class="tab-nav nav"] li').on('click',function(){

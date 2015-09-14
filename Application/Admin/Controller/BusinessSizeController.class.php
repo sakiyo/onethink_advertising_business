@@ -1,17 +1,17 @@
 <?php
-# Author: æ¸©å¼€å…ƒ<wenkaiyuan.6@163.com 594164084@qq.com>
+# Author: ÎÂ¿ªÔª<wenkaiyuan.6@163.com 594164084@qq.com>
 
 namespace Admin\Controller;
 
 /**
- * å°ºå¯¸
- * @author æ¸©å¼€å…ƒ<wenkaiyuan.6@163.com 594164084@qq.com>
+ * ³ß´ç
+ * @author ÎÂ¿ªÔª<wenkaiyuan.6@163.com 594164084@qq.com>
  */
 class BusinessSizeController extends AdminController {
 
 	/**
-	 * å°ºå¯¸åˆ—è¡¨
-	 * @author æ¸©å¼€å…ƒ<wenkaiyuan.6@163.com 594164084@qq.com>
+	 * ³ß´çÁĞ±í
+	 * @author ÎÂ¿ªÔª<wenkaiyuan.6@163.com 594164084@qq.com>
 	 */
 	public function index() {
 		$title = I('title');
@@ -22,11 +22,12 @@ class BusinessSizeController extends AdminController {
 
 		$list = $this->lists('BusinessSize', $map);
 		int_to_string($list);
-		// è®°å½•å½“å‰åˆ—è¡¨é¡µçš„cookie
+		// ¼ÇÂ¼µ±Ç°ÁĞ±íÒ³µÄcookie
 		Cookie('__forward__', $_SERVER['REQUEST_URI']);
 
-		//ç”Ÿæˆé¢åŒ…å±‘
-		if (!empty($business_title = I('business_title'))) {
+		//Éú³ÉÃæ°üĞ¼
+		$business_title = I('business_title');
+		if (!empty($usiness_title)) {
 			$__crumbs__ = '->' . I('business_title');
 			Cookie('__crumbs__', $__crumbs__);
 			Cookie('__crumbs_param__', array(
@@ -36,26 +37,26 @@ class BusinessSizeController extends AdminController {
 		}
 
 		$this->assign('_list', $list);
-		$this->meta_title = 'å°ºå¯¸åˆ—è¡¨';
+		$this->meta_title = '³ß´çÁĞ±í';
 		$this->display();
 	}
 
 	/**
-	 * æ–°å¢å°ºå¯¸
-	 * @author æ¸©å¼€å…ƒ<wenkaiyuan.6@163.com 594164084@qq.com>
+	 * ĞÂÔö³ß´ç
+	 * @author ÎÂ¿ªÔª<wenkaiyuan.6@163.com 594164084@qq.com>
 	 */
 	public function add() {
 		if (IS_POST) {
 			$BusinessSize = D('BusinessSize');
 			if ($BusinessSize->create() !== false) {
-				//æ‹¼æ¥å®½é«˜ä¸ºæ˜¾ç¤ºå¤´
+				//Æ´½Ó¿í¸ßÎªÏÔÊ¾Í·
 				if (empty($BusinessSize->title)) {
 					$BusinessSize->title = $BusinessSize->width . 'x' . $BusinessSize->height;
 				}
 				if (!$BusinessSize->add()) {
-					$this->error('æ·»åŠ å°ºå¯¸å¤±è´¥');
+					$this->error('Ìí¼Ó³ß´çÊ§°Ü');
 				} else {
-					$this->success('æ·»åŠ å°ºå¯¸æˆåŠŸ', U('index', array(
+					$this->success('Ìí¼Ó³ß´ç³É¹¦', U('index', array(
 						'business_id' => I('business_id'),
 					)));
 				}
@@ -63,51 +64,51 @@ class BusinessSizeController extends AdminController {
 				$this->error($BusinessSize->getError());
 			}
 		} else {
-			$this->meta_title = 'æ–°å¢å°ºå¯¸';
+			$this->meta_title = 'ĞÂÔö³ß´ç';
 			$this->display('edit');
 		}
 	}
 
 	/**
-	 * ç¼–è¾‘å°ºå¯¸
-	 * @author æ¸©å¼€å…ƒ<wenkaiyuan.6@163.com 594164084@qq.com>
+	 * ±à¼­³ß´ç
+	 * @author ÎÂ¿ªÔª<wenkaiyuan.6@163.com 594164084@qq.com>
 	 */
 	public function edit($id = 0) {
 		if (IS_POST) {
 			$BusinessSize = D('BusinessSize');
 			$data = $BusinessSize->create();
 			if ($data) {
-				//æ‹¼æ¥å®½é«˜ä¸ºæ˜¾ç¤ºå¤´
+				//Æ´½Ó¿í¸ßÎªÏÔÊ¾Í·
 				if (empty($BusinessSize->title)) {
 					$BusinessSize->title = $BusinessSize->width . 'x' . $BusinessSize->height;
 				}
 				if ($BusinessSize->save()) {
-					//è®°å½•è¡Œä¸º
+					//¼ÇÂ¼ĞĞÎª
 					// action_log('update_business_size', 'BusinessSize', $data['id'], UID);
-					$this->success('æ›´æ–°æˆåŠŸ', Cookie('__forward__'));
+					$this->success('¸üĞÂ³É¹¦', Cookie('__forward__'));
 				} else {
-					$this->error('æ›´æ–°å¤±è´¥');
+					$this->error('¸üĞÂÊ§°Ü');
 				}
 			} else {
 				$this->error($BusinessSize->getError());
 			}
 		} else {
 			$info = array();
-			/* è·å–æ•°æ® */
+			/* »ñÈ¡Êı¾İ */
 			$info = M('BusinessSize')->field(true)->find($id);
 
 			if (false === $info) {
-				$this->error('è·å–å°ºå¯¸ä¿¡æ¯é”™è¯¯');
+				$this->error('»ñÈ¡³ß´çĞÅÏ¢´íÎó');
 			}
 			$this->assign('info', $info);
-			$this->meta_title = 'ç¼–è¾‘å°ºå¯¸';
+			$this->meta_title = '±à¼­³ß´ç';
 			$this->display();
 		}
 	}
 
 	/**
-	 * å°ºå¯¸çŠ¶æ€ä¿®æ”¹
-	 * @author æ¸©å¼€å…ƒ<wenkaiyuan.6@163.com 594164084@qq.com>
+	 * ³ß´ç×´Ì¬ĞŞ¸Ä
+	 * @author ÎÂ¿ªÔª<wenkaiyuan.6@163.com 594164084@qq.com>
 	 */
 	public function changeStatus($method = null) {
 		$this->changeStatusMine($method, CONTROLLER_NAME);

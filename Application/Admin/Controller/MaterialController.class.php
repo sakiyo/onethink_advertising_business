@@ -9,6 +9,7 @@ namespace Admin\Controller;
  */
 class MaterialController extends AdminController {
 
+	/* MaterialType 对应不同的处理方法 */
 	private $saveFun = array(
 		1 => 'savePicAd',
 		2 => 'saveCodeAd',
@@ -35,7 +36,9 @@ class MaterialController extends AdminController {
 		Cookie('__forward__', $_SERVER['REQUEST_URI']);
 
 		//生成面包屑
-		if (!empty($business_title = I('business_title')) && !empty($business_size_title = I('business_size_title'))) {
+		$business_title = I('business_title');
+		$business_size_title = I('business_size_title');
+		if (!empty($business_title) && !empty($business_size_title)) {
 			$__crumbs__ = '->' . $business_title . '->' . $business_size_title;
 			Cookie('__crumbs__', $__crumbs__);
 		}
@@ -60,6 +63,7 @@ class MaterialController extends AdminController {
 					$this->error('添加素材失败');
 				} else {
 					/* 处理属性 */
+					# TODO
 
 					$this->success('添加素材成功', U('index', array('business_size_id' => I('business_size_id'))));
 				}
@@ -99,6 +103,14 @@ class MaterialController extends AdminController {
 			if (false === $info) {
 				$this->error('获取素材信息错误');
 			}
+
+			/* 对属性的处理 */
+			# TODO
+			if (isset($this->saveFun[$info['material_type']])) {
+				$fun = $this->saveFun[$info['material_type']];
+				$this->$fun($info);
+			}
+
 			$this->assign('info', $info);
 			$this->meta_title = '编辑素材';
 			$this->display();
@@ -113,7 +125,11 @@ class MaterialController extends AdminController {
 		$this->changeStatusMine($method, CONTROLLER_NAME);
 	}
 
-	private function savePicAd() {}
+	private function savePicAd(&$info) {
+		$attribute = json_decode($info['attribute'], true);
+		$info_tag_1 = array(
+		);
+	}
 	private function saveCodeAd() {}
 	private function saveVideoAd() {}
 	private function saveIframeAd() {}
