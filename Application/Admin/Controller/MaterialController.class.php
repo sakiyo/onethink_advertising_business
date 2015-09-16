@@ -41,6 +41,8 @@ class MaterialController extends AdminController {
 		if (!empty($business_title) && !empty($business_size_title)) {
 			$__crumbs__ = '->' . $business_title . '->' . $business_size_title;
 			Cookie('__crumbs__', $__crumbs__);
+
+			$this->assign('__crumbs__', $__crumbs__);
 		}
 
 		$this->assign('_list', $list);
